@@ -13,10 +13,8 @@ type Truck struct {
 	ID              int
 	License_number  string
 	License_type    string
-	Type            string
+	Truck_type      string
 	Production_year int
-	STNK            string
-	KIR             string
 	Created_at      time.Time
 	Updated_at      time.Time
 }
