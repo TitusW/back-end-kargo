@@ -1,4 +1,6 @@
 const router = require('express').Router();
+const shipmentRouter = require('./shipments/routes');
+
 
 router.get('/', (_req,res)=>{
     res.status(200).json({
@@ -6,5 +8,9 @@ router.get('/', (_req,res)=>{
         data: {}
     });
 });
+
+
+router.use('/shipments', shipmentRouter);
+
 
 module.exports = router;

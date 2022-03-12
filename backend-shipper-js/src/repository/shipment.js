@@ -17,12 +17,12 @@ const ShipmentRepository = {
   },
 
   async update(shipmentNumber,data) {
-      const result = await Shipment.update(data,{
-          where:{
-              shipmentNumber: shipmentNumber
-          }
+      const result = await Shipment.update(data, {
+        where: {
+          ShipmentNumber : shipmentNumber
+        }
       });
-      return result.get({plain:true});
+      return result;
   },
 
 
