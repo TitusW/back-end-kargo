@@ -4,13 +4,30 @@ import (
 	"errors"
 	"log"
 	"os"
+
+	"github.com/joho/godotenv"
 )
 
 func main() {
-	err := checkEnv()
+	err := initEnv()
 	if err != nil {
 		log.Fatalf("Error ENV: %s", err)
 	}
+
+	err = checkEnv()
+	if err != nil {
+		log.Fatalf("Error ENV: %s", err)
+	}
+}
+
+func initEnv() error {
+	log.Println("Checking .env file")
+
+	if err := godotenv.Load(); err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func checkEnv() error {
