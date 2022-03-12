@@ -1,0 +1,24 @@
+{
+  "name": "backend-shipper",
+  "version": "1.0.0",
+  "description": "backend service for shipper ",
+  "main": "index.js",
+  "scripts": {
+    "migrate:seed": "sequelize-cli db:migrate && sequelize-cli db:seed:all",
+    "migrate:test": "cross-env NODE_ENV=test sequelize-cli db:migrate && cross-env NODE_ENV=test sequelize-cli db:migrate:undo:all ",
+    "start:dev": "nodemon src/"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.3",
+    "mysql2": "^2.3.2",
+    "randomstring": "^1.2.2",
+    "sequelize": "^6.9.0",
+    "sequelize-cli": "^6.4.1",
+    "helmet": "^4.3.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }  
+}
