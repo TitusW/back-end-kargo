@@ -27,8 +27,7 @@ module.exports = (sequelize, DataTypes) => {
     Origin: DataTypes.STRING,
     Destination: DataTypes.STRING,
     LoadingDate: DataTypes.DATE,
-    Status: DataTypes.ENUM(...status),
-    Truck: DataTypes.STRING
+    Status: DataTypes.ENUM(...status)
   }, {
     sequelize,
     modelName: 'Shipment',

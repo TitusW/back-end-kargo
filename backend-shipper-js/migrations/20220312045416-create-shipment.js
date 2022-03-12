@@ -34,9 +34,6 @@ module.exports = {
       Status: {
         type: Sequelize.ENUM(...status)
       },
-      Truck: {
-        type: Sequelize.STRING
-      },
       CreatedAt: {
         allowNull: false,
         type: Sequelize.DATE
