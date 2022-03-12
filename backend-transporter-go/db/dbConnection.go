@@ -32,4 +32,5 @@ func (db *Database) Connect(l *log.Logger) {
 }
 
 func (db *Database) Close(l *log.Logger) {
+	l.Println("Closing DB connection")
 }

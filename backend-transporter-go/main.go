@@ -45,7 +45,9 @@ func main() {
 	}
 
 	go func() {
-		database.Connect()
+		db := database.Database{}
+		db.Connect(l)
+		defer db.Close(l)
 
 		l.Printf("Starting server on port %s\n", port)
 
