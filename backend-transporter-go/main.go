@@ -11,7 +11,10 @@ import (
 	"time"
 
 	database "github.com/TitusW/team4-kargo-excellerate/db"
+
+	"github.com/TitusW/team4-kargo-excellerate/handlers"
 	gohandlers "github.com/gorilla/handlers"
+
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 )
@@ -29,11 +32,19 @@ func main() {
 		log.Fatalf("Error ENV: %s", err)
 	}
 
+	db := database.Connect(l)
+	defer db.Close(l)
+
 	port := ":" + os.Getenv("PORT")
 
 	CORSHandler := gohandlers.CORS(gohandlers.AllowedOrigins([]string{"*"}))
 
 	router := mux.NewRouter()
+	driverh := handlers.NewDriverHandler(db.Connection)
+
+	router.HandleFunc("/drivers", driverh.GetDrivers).Methods("GET")
+	router.HandleFunc("/drivers", driverh.CreateDriver).Methods("POST")
+	router.HandleFunc("/drivers/{id}", driverh.UpdateDriver).Methods("PUT")
 
 	srv := &http.Server{
 		Addr:         port,
@@ -45,7 +56,6 @@ func main() {
 	}
 
 	go func() {
-		database.Connect()
 
 		l.Printf("Starting server on port %s\n", port)
 
@@ -68,7 +78,6 @@ func main() {
 	srv.Shutdown(ctx)
 	l.Println("Shutting down...")
 	os.Exit(0)
-
 }
 
 func initEnv(l *log.Logger) error {

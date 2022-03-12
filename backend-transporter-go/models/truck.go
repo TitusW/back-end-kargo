@@ -55,10 +55,3 @@ type Truck struct {
 	// required: false
 	UpdatedAt string `json:"updatedAt"`
 }
-
-type Trucks []*Truck
-
-func GetTrucks() (Trucks, error) {
-	var trucks Trucks
-	DB := db.GetDB()
-}
