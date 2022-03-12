@@ -5,8 +5,8 @@ const ShipmentRepository = require("../../../repository/shipment");
 exports.allocateShipmentService = async (shipmentNumber, truckId, driverId) => {
     const data = {};
     const [driverData, truckData] = await Promise.all([
-        axios.default.get(`/drivers/${driverId}`),
-        axios.default.get(`/truck/${truckId}`)
+        axios.default.get(`http://3494-180-244-136-209.ngrok.io/drivers/${driverId}`),
+        axios.default.get(`http://3494-180-244-136-209.ngrok.io/truck/${truckId}`)
     ])
     data.Driver = driverData.Name;
     data.LicenseNumber = truckData.licenseNumber;
