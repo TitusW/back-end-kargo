@@ -10,6 +10,7 @@ import (
 	"syscall"
 	"time"
 
+	database "github.com/TitusW/team4-kargo-excellerate/db"
 	gohandlers "github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
@@ -44,6 +45,8 @@ func main() {
 	}
 
 	go func() {
+		database.Connect()
+
 		l.Printf("Starting server on port %s\n", port)
 
 		err := srv.ListenAndServe()
