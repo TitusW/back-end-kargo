@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from "axios";
 import { IoMdAddCircleOutline } from 'react-icons/io'
-import { useDisclosure } from '@chakra-ui/react'
+import { Select, useDisclosure } from '@chakra-ui/react'
 import { Button, Flex } from "@chakra-ui/react";
 import {
     Table,
@@ -53,7 +53,7 @@ function Shipments() {
     // });
 
     useEffect(() => {
-        axios.get('http://57fd-182-1-76-159.ngrok.io/api/v1/shipments/all').then((response) => {
+        axios.get('https://347e-182-1-101-68.ngrok.io/api/v1/shipments/all').then((response) => {
             console.log(response.data.data)
             setDataShipments(response.data.data);
             setAllDataCharacters(response.data.data);
@@ -62,20 +62,20 @@ function Shipments() {
           });
     },[]);
 
-    const handleForm = () => {
-        axios.post("http://57fd-182-1-76-159.ngrok.io/api/v1/shipments/addShipment", {
-            body: {
-                "ShipmentNumber": "123",
-                "LicenseNumber": 12312131,
-                "Driver": "driver Budi",
-                "Origin": "origin Budi",
-                "Destination": "String Budi",
-                "LoadingDate": "2022-03-02T17:04:00.000Z",
-                "Status": "status1",
-                "Truck": "truck 1"
-            }
-        })
-    }
+    // const handleForm = () => {
+    //     axios.post("http://57fd-182-1-76-159.ngrok.io/api/v1/shipments/addShipment", {
+    //         body: {
+    //             "ShipmentNumber": "123",
+    //             "LicenseNumber": 12312131,
+    //             "Driver": "driver Budi",
+    //             "Origin": "origin Budi",
+    //             "Destination": "String Budi",
+    //             "LoadingDate": "2022-03-02T17:04:00.000Z",
+    //             "Status": "status1",
+    //             "Truck": "truck 1"
+    //         }
+    //     })
+    // }
 
     const navigate = useNavigate()
     const filterCharacters = (filterStr) => {
@@ -132,7 +132,7 @@ function Shipments() {
                         </Flex>
                     </Flex>
                     <Flex>
-                        <Button alignItems="center" onClick={() => {addShipmentOnOpen();handleForm();}}>
+                        <Button alignItems="center" onClick={addShipmentOnOpen}>
                             <IoMdAddCircleOutline></IoMdAddCircleOutline>
                             <Flex marginX="1"></Flex>
                             Add Shipment
@@ -169,7 +169,7 @@ function Shipments() {
                                 <Td>{shipmentObj.Destination}</Td>
                                 <Td>{shipmentObj.LoadingDate}</Td>
                                 <Td>{shipmentObj.Status}</Td>
-                                <Td><Button>Test</Button></Td>
+                                <Td><Button>Action</Button></Td>
                             </Tr>
                             )
                         })}

@@ -2,73 +2,23 @@ import gql from 'graphql-tag'
 
 export const GET_ALL_TRUCKS = gql`
   query allFilms {
-    allFilms {
-        films {
-            id
-            title      
-            director
-            releaseDate
-        }  
-    }
+    
 }    
 `
 
-export const GET_FILM = gql`
-query getFilm($idFilm: ID!){
-    film(id: $idFilm){
-        title
-        releaseDate
-        director
-        producers
-        openingCrawl
-        characterConnection{
-          characters{
-            id
-            name
-            gender
-            birthYear
-            skinColor
-            species{
-                id
-                name
-            }
-          }
-        }
-      }
+export const GET_ALL_DRIVER = gql`
+query getFilm{
 }
 `
 
-export const GET_ALL_CHARACTERS = gql`
-query getAllCharacters{
-    allPeople{
-        people{
-            id
-            name
-            gender
-            birthYear
-            skinColor
-            species{
-                id
-                name
-            }
-        }
-    }
+export const GET_ALL_SHIPMENT = gql`
+query getAllShipment{
 }
 `
 
-export const GET_CHARACTER = gql`
-query getCharacter($idChar: ID!){
-    person(id: $idChar){
-        name
-        gender
-        birthYear
-        hairColor
-        height
-        mass
-        species{
-            name
-        }
-    }
+export const GET_SHIPMENT = gql`
+query getShipment($idChar: ID!){
+    
 }
 `
 

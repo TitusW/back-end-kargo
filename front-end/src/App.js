@@ -10,6 +10,7 @@ import {
   Navigate } from "react-router-dom";
 
 import TopNav from './components/TopNav'
+import TopNavLog from './components/TopNavLog'
 import { ChakraProvider } from '@chakra-ui/react'
 
 import Login from './pages/Login'
@@ -28,6 +29,16 @@ const LayoutWrapScreen = ({ children }) => {
     </>
   )
 }
+const LayoutWrapScreenLog = ({ children }) => {
+  return (
+    <>
+      <div class="flex container mx-auto flex-row">
+        <TopNavLog />
+        <div class="container mx-auto px-4">{children}</div>
+      </div>
+    </>
+  )
+}
 
 function App() {
   return (
@@ -37,9 +48,9 @@ function App() {
           <BrowserRouter>
             <Routes>
             <Route exacts path="/login" element={(
-                  <LayoutWrapScreen>
+                  <LayoutWrapScreenLog>
                   <Login />
-                  </LayoutWrapScreen>
+                  </LayoutWrapScreenLog>
                 )
               }/>
               <Route exacts path="/shipments" element={(

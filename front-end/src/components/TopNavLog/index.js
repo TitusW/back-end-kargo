@@ -3,11 +3,10 @@ import { Link } from 'react-router-dom';
 
 import { Button, Flex, Image, Stack, Text } from '@chakra-ui/react';
 
-function TopNav({}) {
+function TopNavLog({}) {
   const [authenticated, setauthenticated] = useState(false);
 
   const handleOut = () =>{
-    window.location.href = "http://localhost:3000/login";
     localStorage.setItem('auth', false);
   }
     return (
@@ -44,22 +43,7 @@ function TopNav({}) {
         >
           <Text color="#6C7284" fontSize="32px"> | </Text>
         </Flex>
-        {localStorage.getItem("auth") ? (
-          <Flex
-            align={{ base: 'stretch', md: 'center' }}
-          >
-            <Link to="/shipments">
-              <Text color="#000" mx={10} fontWeight={500} fontSize="22px">Shipments</Text>
-            </Link>
-            <Link to="/drivers">
-              <Text color="#000" mx={10} fontWeight={500} fontSize="22px">Drivers</Text>
-            </Link>
-            <Link to="/trucks">
-              <Text color="#000" mx={10} fontWeight={500} fontSize="22px">Trucks</Text>
-            </Link>
-          </Flex>
-        ) : (
-          <Flex
+        <Flex
             align="center"
             px={2}
             fontWeight="bold"
@@ -69,15 +53,9 @@ function TopNav({}) {
           >
             <Text color="#6C7284">Kargo Transport Management System</Text>
           </Flex>
-        )}
       </Stack>
-      <Text>
-        {localStorage.getItem("auth") ? (
-        <Button onClick={handleOut}>Logout</Button>
-        ) : (null)}
-      </Text>
     </Flex>
     )
 }
 
-export default TopNav;
+export default TopNavLog;
