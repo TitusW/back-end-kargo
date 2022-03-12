@@ -14,7 +14,7 @@ function TopNav({}) {
       background="#fff"
       maxW="100%"
       minH={20}
-      px={10}
+      px={200}
       w="100%"
       direction={{ base: 'column', md: 'row' }}
     >

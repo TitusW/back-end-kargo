@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
       type:DataTypes.STRING,
       unique: true
     },
-    LicenseNumber: DataTypes.INTEGER,
+    LicenseNumber: DataTypes.BIGINT,
     Driver: DataTypes.STRING,
     Origin: DataTypes.STRING,
     Destination: DataTypes.STRING,

@@ -1,5 +1,6 @@
 const router = require('express').Router();
-const shipmentController = require('./shipments/shipment-controller')
+const shipmentRouter = require('./shipments/routes');
+
 
 router.get('/', (_req, res) => {
     res.status(200).json({
@@ -8,13 +9,8 @@ router.get('/', (_req, res) => {
     });
 });
 
-router.get('/all', async(req, res, next) => {
-    try {
-        const res = await shipmentController.getShipmentAllData();
-        res.json(res);
-    } catch (err) {
-        next(err)
-    }
-});
+
+router.use('/shipments', shipmentRouter);
+
 
 module.exports = router;

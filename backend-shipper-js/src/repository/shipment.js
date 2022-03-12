@@ -32,6 +32,17 @@ const ShipmentRepository = {
     },
 
 
+<<<<<<< HEAD
+=======
+  async update(shipmentNumber,data) {
+      const result = await Shipment.update(data, {
+        where: {
+          ShipmentNumber : shipmentNumber
+        }
+      });
+      return result;
+  },
+>>>>>>> 539189cb2e9b74faa96d4a4b878de233e4da09e9
 
 
 };
