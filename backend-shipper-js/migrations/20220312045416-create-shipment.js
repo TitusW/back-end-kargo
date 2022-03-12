@@ -17,7 +17,7 @@ module.exports = {
         unique: true
       },
       LicenseNumber: {
-        type: Sequelize.INTEGER
+        type: Sequelize.BIGINT
       },
       Driver: {
         type: Sequelize.STRING
