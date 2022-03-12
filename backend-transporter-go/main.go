@@ -44,10 +44,12 @@ func main() {
 	truckh := handlers.NewTruckHandler(db.Connection)
 
 	router.HandleFunc("/drivers", driverh.GetDrivers).Methods("GET")
+	router.HandleFunc("/driver/{id}", driverh.GetDriverById).Methods("GET")
 	router.HandleFunc("/driver", driverh.CreateDriver).Methods("POST")
 	router.HandleFunc("/driver/{id}", driverh.UpdateDriver).Methods("PUT")
 
 	router.HandleFunc("/trucks", truckh.GetTrucks).Methods("GET")
+	router.HandleFunc("/truck/{id}", truckh.GetTruckById).Methods("PUT")
 	router.HandleFunc("/truck", truckh.CreateTruck).Methods("POST")
 	router.HandleFunc("/truck/{id}", truckh.UpdateTruck).Methods("PUT")
 
