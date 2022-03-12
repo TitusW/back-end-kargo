@@ -4,13 +4,19 @@ import (
 	"errors"
 	"log"
 	"os"
+
+	database "github.com/TitusW/team4-kargo-excellerate/db"
+	"github.com/joho/godotenv"
 )
 
 func main() {
-	err := checkEnv()
-	if err != nil {
-		log.Fatalf("Error ENV: %s", err)
-	}
+	// err := checkEnv()
+	// if err != nil {
+	// 	log.Fatalf("Error ENV: %s", err)
+	// }
+	godotenv.Load()
+	db := database.Connect()
+
 }
 
 func checkEnv() error {
