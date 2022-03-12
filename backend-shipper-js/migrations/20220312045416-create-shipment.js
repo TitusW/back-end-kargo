@@ -13,7 +13,8 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       ShipmentNumber: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        unique: true
       },
       LicenseNumber: {
         type: Sequelize.INTEGER
