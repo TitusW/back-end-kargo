@@ -1,5 +1,6 @@
 // import { Select } from "@chakra-ui/react"
-import React from "react"
+import React, {useState} from "react"
+import axios from 'axios'
 
 import {
     Modal,
@@ -19,6 +20,27 @@ function ModalFormAddShipment({ isOpen, onOpen, onClose, data, selectedOption, v
 
     const initialRef = React.useRef()
     const finalRef = React.useRef()
+    const [shipmentObj, setShipmentObj] = useState(null)
+
+    const handleForm = () => {
+        // axios.post("http://57fd-182-1-76-159.ngrok.io/api/v1/shipments/addShipment", {
+        //     body: {
+        //         "ShipmentNumber": "123",
+        //         "LicenseNumber": 12312131,
+        //         "Driver": "driver Budi",
+        //         "Origin": "origin Budi",
+        //         "Destination": "String Budi",
+        //         "LoadingDate": "2022-03-02T17:04:00.000Z",
+        //         "Status": "status1",
+        //         "Truck": "truck 1",
+        //         "CreatedAt": "2022-03-02T17:04:00.000Z",
+        //         "UpdatedAt": "2022-03-02T17:04:00.000Z"
+        //     }
+        // })
+        // .then((response) => {
+        //     setShipmentObj(response.data);
+        // });
+    }
 
     return (
         <>
@@ -61,7 +83,7 @@ function ModalFormAddShipment({ isOpen, onOpen, onClose, data, selectedOption, v
             </ModalBody>
 
             <ModalFooter>
-                <Button colorScheme='blue' mr={3}>
+                <Button colorScheme='blue' mr={3} onClick={handleForm()}>
                 Save
                 </Button>
                 <Button onClick={onClose}>Cancel</Button>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import axios from "axios";
 import { IoMdAddCircleOutline } from 'react-icons/io'
 import { useDisclosure } from '@chakra-ui/react'
 import { Button, Flex } from "@chakra-ui/react";
@@ -20,9 +21,11 @@ import BodyPanel from '../components/BodyPanel';
 import LoadingComponent from '../components/LoadingComponent';
 import ModalFormAddEditTruck from '../components/ModalFormAddEditTruck';
 
-function Trucks({dataCharacters}) {
+function Trucks() {
     const itemsPerPage = 10;
+    const baseUrl = "https://3494-180-244-136-209.ngrok.io"
     const { isOpen, onOpen, onClose } = useDisclosure()
+    const [dataTrucks, setDataTrucks] = useState([])
     const [allDataCharacters, setAllDataCharacters] = useState([]);
     const [perPageCharacters, setPerPageCharacters] = useState([]);
     const [filterGender, setFilterGender] = useState("");
@@ -32,38 +35,43 @@ function Trucks({dataCharacters}) {
     const [filteredCharacters, setFilteredCharacters] = useState([]);
     const [openModalDialog, setOpenModalDialog] = useState(false);
     // const [dataLength, setDataLength] = useState(0);
-    const { data, loading, error } = useQuery(GET_ALL_CHARACTERS, {
-        onCompleted: (data) => {
-            if(dataCharacters){
-                setAllDataCharacters(dataCharacters);
-                setFilteredCharacters(dataCharacters);
-                setPerPageCharacters(dataCharacters.slice(0, itemsPerPage));
-                // setDataLength(dataCharacters.length);
-            }else{
-                setAllDataCharacters(data.allPeople.people);
-                setFilteredCharacters(data.allPeople.people);
-                setPerPageCharacters(data.allPeople.people.slice(0, itemsPerPage));
-                // setDataLength(data.allPeople.people.length);
-            }
-        }
-    });
+    const [error, setError] = useState(false)
+    const [loading, setLoading] = useState(false)
+    // const { data, loading, error } = useQuery(GET_ALL_CHARACTERS, {
+    //     onCompleted: (data) => {
+    //         if(dataTrucks){
+    //             setAllDataCharacters(dataTrucks);
+    //             setFilteredCharacters(dataTrucks);
+    //             setPerPageCharacters(dataTrucks.slice(0, itemsPerPage));
+    //             // setDataLength(dataTrucks.length);
+    //         }else{
+    //             setAllDataCharacters(data.allPeople.people);
+    //             setFilteredCharacters(data.allPeople.people);
+    //             setPerPageCharacters(data.allPeople.people.slice(0, itemsPerPage));
+    //             // setDataLength(data.allPeople.people.length);
+    //         }
+    //     }
+    // });
 
     useEffect(() => {
-        
-    },[data, loading]);
+        axios.get(`${baseUrl}/api/v1/trucks`).then((response) => {
+            console.log(response)
+            setDataTrucks(response.data);
+          });
+    },[]);
 
     const navigate = useNavigate()
     const filterCharacters = (filterStr) => {
         setFilterText(filterStr);
-        let charListTmp = allDataCharacters.filter((character) => {
-            let characterGender = character.gender.replace(/(^\w{1}|\.\s*\w{1})/gi, function(toReplace) {
+        let charListTmp = allDataCharacters.filter((truckObj) => {
+            let truckObjGender = truckObj.gender.replace(/(^\w{1}|\.\s*\w{1})/gi, function(toReplace) {
                 return toReplace.toUpperCase();
             });
-            let characterfilterGender = filterGender.replace(/(^\w{1}|\.\s*\w{1})/gi, function(toReplace) {
+            let truckObjfilterGender = filterGender.replace(/(^\w{1}|\.\s*\w{1})/gi, function(toReplace) {
                 return toReplace.toUpperCase();
             });
-            if(characterGender.includes(characterfilterGender) && character.skinColor.includes(filterSkin) && character.name.toLowerCase().includes(filterStr)){
-                return character
+            if(truckObjGender.includes(truckObjfilterGender) && truckObj.skinColor.includes(filterSkin) && truckObj.name.toLowerCase().includes(filterStr)){
+                return truckObj
             }
             return ""
         })
@@ -75,15 +83,15 @@ function Trucks({dataCharacters}) {
         if(filterStr === 'allGender') 
             filterStr = '';
         setFilterGender(filterStr);
-        let charListTmp = allDataCharacters.filter((character) => {
-            let characterGender = character.gender.replace(/(^\w{1}|\.\s*\w{1})/gi, function(toReplace) {
+        let charListTmp = allDataCharacters.filter((truckObj) => {
+            let truckObjGender = truckObj.gender.replace(/(^\w{1}|\.\s*\w{1})/gi, function(toReplace) {
                 return toReplace.toUpperCase();
             });
-            let characterfilterGender = filterStr.replace(/(^\w{1}|\.\s*\w{1})/gi, function(toReplace) {
+            let truckObjfilterGender = filterStr.replace(/(^\w{1}|\.\s*\w{1})/gi, function(toReplace) {
                 return toReplace.toUpperCase();
             });
-            if(characterGender.includes(characterfilterGender) && character.skinColor.includes(filterSkin) && character.name.toLowerCase().includes(filterText)){
-                return character
+            if(truckObjGender.includes(truckObjfilterGender) && truckObj.skinColor.includes(filterSkin) && truckObj.name.toLowerCase().includes(filterText)){
+                return truckObj
             }
             return ""
         })
@@ -129,14 +137,14 @@ function Trucks({dataCharacters}) {
                         </Tr>
                     </Thead>
                     <Tbody>
-                        {perPageCharacters.map((character, key) => {
+                        {dataTrucks.map((truckObj, key) => {
                             return(
-                            <Tr height="30px" key={key} class="odd:bg-white even:bg-slate-100 h-12 hover:bg-slate-300" onClick={() => navigate(`/characters/${character.id}`)}>
-                                <Td>{key+1+pageOffset}</Td>
-                                <Td>{character.name}</Td>
-                                <Td>{character.gender}</Td>
-                                <Td>{character.birthYear}</Td>
-                                <Td>{character.species ? character.species.name : "null"}</Td>
+                            <Tr height="30px" key={key} class="odd:bg-white even:bg-slate-100 h-12 hover:bg-slate-300" onClick={() => navigate(`/truckObjs/${truckObj.id}`)}>
+                                <Td>{key+1}</Td>
+                                <Td>{truckObj.License_number}</Td>
+                                <Td>{truckObj.Truck_type}</Td>
+                                <Td>{truckObj.License_type}</Td>
+                                <Td>{truckObj.Production_year}</Td>
                             </Tr>
                             )
                         })}

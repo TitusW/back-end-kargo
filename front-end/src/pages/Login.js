@@ -1,4 +1,7 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import { 
+  BrowserRouter,
+  useNavigate } from "react-router-dom";
 import {
   Flex,
   Heading,
@@ -13,7 +16,8 @@ import {
   Avatar,
   FormControl,
   FormHelperText,
-  InputRightElement
+  InputRightElement,
+  Radio, RadioGroup
 } from "@chakra-ui/react";
 import { FaUserAlt, FaLock } from "react-icons/fa";
 
@@ -22,8 +26,16 @@ const CFaLock = chakra(FaLock);
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [value, setValue] = React.useState("transporter");
+  const navigate = useNavigate();
 
   const handleShowClick = () => setShowPassword(!showPassword);
+
+  const handleLogin = () => {
+    localStorage.setItem('Role', value);
+    localStorage.setItem('auth', true);
+    navigate('/shipments');
+  }
 
   return (
     <Flex
@@ -76,6 +88,12 @@ const Login = () => {
                   </InputRightElement>
                 </InputGroup>
               </FormControl>
+              <RadioGroup onChange={setValue} value={value}>
+                <Stack direction='row'>
+                  <Radio value='Transporter'>Transporter</Radio>
+                  <Radio value='Shipper'>Shipper</Radio>
+                </Stack>
+              </RadioGroup>
               <Button
                 borderRadius={0}
                 type="submit"
@@ -83,6 +101,7 @@ const Login = () => {
                 bgColor="#2892d2"
                 color="#fff"
                 width="full"
+                onClick={handleLogin}
               >
                 Login
               </Button>

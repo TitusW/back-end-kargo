@@ -1,6 +1,6 @@
 import gql from 'graphql-tag'
 
-export const GET_ALL_FILMS = gql`
+export const GET_ALL_TRUCKS = gql`
   query allFilms {
     allFilms {
         films {

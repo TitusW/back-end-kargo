@@ -6,6 +6,9 @@ import { Button, Flex, Image, Stack, Text } from '@chakra-ui/react';
 function TopNav({}) {
   const [authenticated, setauthenticated] = useState(false);
 
+  const handleOut = () =>{
+    localStorage.setItem('auth', false);
+  }
     return (
       <Flex
       justify="space-between"
@@ -40,7 +43,7 @@ function TopNav({}) {
         >
           <Text color="#6C7284" fontSize="32px"> | </Text>
         </Flex>
-        {authenticated ? (
+        {localStorage.getItem("auth") ? (
           <Flex
             align={{ base: 'stretch', md: 'center' }}
           >
@@ -67,9 +70,11 @@ function TopNav({}) {
           </Flex>
         )}
       </Stack>
-      {/* <Text>
-        Hi, Transporter
-      </Text> */}
+      <Text>
+        {localStorage.getItem("auth") ? (
+        <Button onClick={handleOut}>Logout</Button>
+        ) : (null)}
+      </Text>
     </Flex>
     )
 }

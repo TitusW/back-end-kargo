@@ -6,7 +6,8 @@ import { client } from './apollo/client'
 import { 
   BrowserRouter,
   Routes,
-  Route } from "react-router-dom";
+  Route,
+  Navigate } from "react-router-dom";
 
 import TopNav from './components/TopNav'
 import { ChakraProvider } from '@chakra-ui/react'
@@ -35,7 +36,7 @@ function App() {
         <div className="App">
           <BrowserRouter>
             <Routes>
-            <Route exacts path="/" element={(
+            <Route exacts path="/login" element={(
                   <LayoutWrapScreen>
                   <Login />
                   </LayoutWrapScreen>
@@ -60,15 +61,13 @@ function App() {
                 )
               }/>
               {/* <Route
-                exact
+                exacts
                 path="/"
-                render={() => {
-                    return (
-                        this.state.isUserAuthenticated ?
-                        <Redirect to="/home" /> :
-                        <Redirect to="/test1" /> 
-                    )
-                }}
+                element={
+                        localStorage.getItem("auth") ?
+                        <Navigate to="/shipments" /> :
+                        <Navigate to="/login" /> 
+                }
               /> */}
               {/* <Route exacts path="/films/:idFilm" element={(
                   <LayoutWrapScreen>

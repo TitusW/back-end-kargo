@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import axios from "axios";
 import { IoMdAddCircleOutline } from 'react-icons/io'
 import { useDisclosure } from '@chakra-ui/react'
 import { Button, Flex } from "@chakra-ui/react";
@@ -20,9 +21,11 @@ import BodyPanel from '../components/BodyPanel';
 import LoadingComponent from '../components/LoadingComponent';
 import ModalFormAddEditDriver from '../components/ModalFormAddEditDriver';
 
-function Drivers({dataCharacters}) {
+function Drivers() {
     const itemsPerPage = 10;
+    const baseUrl = "https://3494-180-244-136-209.ngrok.io"
     const { isOpen, onOpen, onClose } = useDisclosure()
+    const [dataDrivers, setDataDrivers] = useState([])
     const [allDataCharacters, setAllDataCharacters] = useState([]);
     const [perPageCharacters, setPerPageCharacters] = useState([]);
     const [filterGender, setFilterGender] = useState("");
@@ -31,38 +34,43 @@ function Drivers({dataCharacters}) {
     const [pageOffset, setPageOffset] = useState(0);
     const [filteredCharacters, setFilteredCharacters] = useState([]);
     // const [dataLength, setDataLength] = useState(0);
-    const { data, loading, error } = useQuery(GET_ALL_CHARACTERS, {
-        onCompleted: (data) => {
-            if(dataCharacters){
-                setAllDataCharacters(dataCharacters);
-                setFilteredCharacters(dataCharacters);
-                setPerPageCharacters(dataCharacters.slice(0, itemsPerPage));
-                // setDataLength(dataCharacters.length);
-            }else{
-                setAllDataCharacters(data.allPeople.people);
-                setFilteredCharacters(data.allPeople.people);
-                setPerPageCharacters(data.allPeople.people.slice(0, itemsPerPage));
-                // setDataLength(data.allPeople.people.length);
-            }
-        }
-    });
+    const [error, setError] = useState(false)
+    const [loading, setLoading] = useState(false)
+    // const { data, loading, error } = useQuery(GET_ALL_CHARACTERS, {
+    //     onCompleted: (data) => {
+    //         if(dataDrivers){
+    //             setAllDataCharacters(dataDrivers);
+    //             setFilteredCharacters(dataDrivers);
+    //             setPerPageCharacters(dataDrivers.slice(0, itemsPerPage));
+    //             // setDataLength(dataDrivers.length);
+    //         }else{
+    //             setAllDataCharacters(data.allPeople.people);
+    //             setFilteredCharacters(data.allPeople.people);
+    //             setPerPageCharacters(data.allPeople.people.slice(0, itemsPerPage));
+    //             // setDataLength(data.allPeople.people.length);
+    //         }
+    //     }
+    // });
 
     useEffect(() => {
-        
-    },[data, loading]);
+        axios.get(`${baseUrl}/api/v1/drivers`).then((response) => {
+            console.log(response);
+            setDataDrivers(response.data);
+          });
+    },[]);
 
     const navigate = useNavigate()
     const filterCharacters = (filterStr) => {
         setFilterText(filterStr);
-        let charListTmp = allDataCharacters.filter((character) => {
-            let characterGender = character.gender.replace(/(^\w{1}|\.\s*\w{1})/gi, function(toReplace) {
+        let charListTmp = allDataCharacters.filter((driverObj) => {
+            let driverObjGender = driverObj.gender.replace(/(^\w{1}|\.\s*\w{1})/gi, function(toReplace) {
                 return toReplace.toUpperCase();
             });
-            let characterfilterGender = filterGender.replace(/(^\w{1}|\.\s*\w{1})/gi, function(toReplace) {
+            let driverObjfilterGender = filterGender.replace(/(^\w{1}|\.\s*\w{1})/gi, function(toReplace) {
                 return toReplace.toUpperCase();
             });
-            if(characterGender.includes(characterfilterGender) && character.skinColor.includes(filterSkin) && character.name.toLowerCase().includes(filterStr)){
-                return character
+            if(driverObjGender.includes(driverObjfilterGender) && driverObj.skinColor.includes(filterSkin) && driverObj.name.toLowerCase().includes(filterStr)){
+                return driverObj
             }
             return ""
         })
@@ -74,15 +82,15 @@ function Drivers({dataCharacters}) {
         if(filterStr === 'allGender') 
             filterStr = '';
         setFilterGender(filterStr);
-        let charListTmp = allDataCharacters.filter((character) => {
-            let characterGender = character.gender.replace(/(^\w{1}|\.\s*\w{1})/gi, function(toReplace) {
+        let charListTmp = allDataCharacters.filter((driverObj) => {
+            let driverObjGender = driverObj.gender.replace(/(^\w{1}|\.\s*\w{1})/gi, function(toReplace) {
                 return toReplace.toUpperCase();
             });
-            let characterfilterGender = filterStr.replace(/(^\w{1}|\.\s*\w{1})/gi, function(toReplace) {
+            let driverObjfilterGender = filterStr.replace(/(^\w{1}|\.\s*\w{1})/gi, function(toReplace) {
                 return toReplace.toUpperCase();
             });
-            if(characterGender.includes(characterfilterGender) && character.skinColor.includes(filterSkin) && character.name.toLowerCase().includes(filterText)){
-                return character
+            if(driverObjGender.includes(driverObjfilterGender) && driverObj.skinColor.includes(filterSkin) && driverObj.name.toLowerCase().includes(filterText)){
+                return driverObj
             }
             return ""
         })
@@ -128,14 +136,14 @@ function Drivers({dataCharacters}) {
                         </Tr>
                     </Thead>
                     <Tbody>
-                        {perPageCharacters.map((character, key) => {
+                        {dataDrivers.map((driverObj, key) => {
                             return(
-                            <Tr height="30px" key={key} class="odd:bg-white even:bg-slate-100 h-12 hover:bg-slate-300" onClick={() => navigate(`/characters/${character.id}`)}>
-                                <Td>{key+1+pageOffset}</Td>
-                                <Td>{character.name}</Td>
-                                <Td>{character.gender}</Td>
-                                <Td>{character.birthYear}</Td>
-                                <Td>{character.species ? character.species.name : "null"}</Td>
+                            <Tr height="30px" key={key} class="odd:bg-white even:bg-slate-100 h-12 hover:bg-slate-300" onClick={() => navigate(`/driverObjs/${driverObj.id}`)}>
+                                <Td>{key+1}</Td>
+                                <Td>{driverObj.Name}</Td>
+                                <Td>{driverObj.Phone_number}</Td>
+                                <Td>{driverObj.Created_at}</Td>
+                                <Td>{driverObj.Status}</Td>
                             </Tr>
                             )
                         })}
@@ -147,7 +155,7 @@ function Drivers({dataCharacters}) {
                 </Flex>
             </BodyPanel>
             <ModalFormAddEditDriver onOpen={onOpen} isOpen={isOpen} onClose={onClose} />
-        </div>
+        </div> 
     )
 }
 
