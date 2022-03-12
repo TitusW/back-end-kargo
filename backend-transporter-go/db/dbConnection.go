@@ -14,23 +14,24 @@ type Database struct {
 	connection *gorm.DB
 }
 
-func (db *Database) Connect(l *log.Logger) {
+func Connect(l *log.Logger) Database {
 	dbh := os.Getenv("DATABASE_HOST")
 	dbp := os.Getenv("DATABASE_PORT")
 	dbu := os.Getenv("DATABASE_USER")
 	dbpw := os.Getenv("DATABASE_PASS")
 	dsn := dbu + ":" + dbpw + "@tcp(" + dbh + ":" + dbp + ")/kargo?charset=utf8mb4&parseTime=True&loc=Local"
-	dbConn, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
-	db.connection = dbConn
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		l.Fatalf("Failed to connect to MySQL %v", err)
 	}
 
-	db.connection.AutoMigrate(&models.Driver{})
-	db.connection.AutoMigrate(&models.Truck{})
+	db.AutoMigrate(&models.Driver{})
+	db.AutoMigrate(&models.Truck{})
 	fmt.Println(dsn)
+
+	return Database{db}
 }
 
-func (db *Database) Close(l *log.Logger) {
+func (db Database) Close(l *log.Logger) {
 	l.Println("Closing DB connection")
 }
