@@ -1,43 +1,87 @@
 package main
 
 import (
+	"context"
 	"errors"
-	"fmt"
 	"log"
 	"net/http"
 	"os"
+	"os/signal"
+	"syscall"
+	"time"
 
 	database "github.com/TitusW/team4-kargo-excellerate/db"
+
 	"github.com/TitusW/team4-kargo-excellerate/handlers"
+	gohandlers "github.com/gorilla/handlers"
+
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 )
 
 func main() {
-	err := initEnv()
+	l := log.New(os.Stdout, "", log.LstdFlags)
+
+	err := initEnv(l)
 	if err != nil {
 		log.Fatalf("Error ENV: %s", err)
 	}
 
-	err = checkEnv()
+	err = checkEnv(l)
 	if err != nil {
 		log.Fatalf("Error ENV: %s", err)
 	}
 
-	db := database.Connect()
-	r := mux.NewRouter()
-	driverh := handlers.NewDriverHandler(db)
+	db := database.Connect(l)
+	defer db.Close(l)
 
-	r.HandleFunc("/drivers", driverh.GetDrivers).Methods("GET")
-	r.HandleFunc("/drivers", driverh.CreateDriver).Methods("POST")
-	r.HandleFunc("/drivers/{id}", driverh.UpdateDriver).Methods("PUT")
+	port := ":" + os.Getenv("PORT")
 
-	fmt.Println("[Go-Debug || GorillaMux] Listening and serving HTTP on : 8080")
-	http.ListenAndServe(":8080", r)
+	CORSHandler := gohandlers.CORS(gohandlers.AllowedOrigins([]string{"*"}))
+
+	router := mux.NewRouter()
+	driverh := handlers.NewDriverHandler(db.Connection)
+
+	router.HandleFunc("/drivers", driverh.GetDrivers).Methods("GET")
+	router.HandleFunc("/drivers", driverh.CreateDriver).Methods("POST")
+	router.HandleFunc("/drivers/{id}", driverh.UpdateDriver).Methods("PUT")
+
+	srv := &http.Server{
+		Addr:         port,
+		Handler:      CORSHandler(router),
+		ErrorLog:     l,
+		ReadTimeout:  time.Duration(5) * time.Second,
+		WriteTimeout: time.Duration(10) * time.Second,
+		IdleTimeout:  time.Duration(120) * time.Second,
+	}
+
+	go func() {
+
+		l.Printf("Starting server on port %s\n", port)
+
+		err := srv.ListenAndServe()
+		if err != nil {
+			l.Printf("Error starting server: %s\n", err)
+			os.Exit(1)
+		}
+	}()
+
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, os.Interrupt)
+	signal.Notify(c, syscall.SIGTERM)
+
+	sig := <-c
+	l.Println("Got signal:", sig)
+
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+	srv.Shutdown(ctx)
+	l.Println("Shutting down...")
+	os.Exit(0)
 }
 
-func initEnv() error {
-	log.Println("Checking .env file")
+func initEnv(l *log.Logger) error {
+	l.Println("Checking .env file")
 
 	if err := godotenv.Load(); err != nil {
 		return err
@@ -46,8 +90,8 @@ func initEnv() error {
 	return nil
 }
 
-func checkEnv() error {
-	log.Println("Checking environment")
+func checkEnv(l *log.Logger) error {
+	l.Println("Checking environment")
 
 	if _, found := os.LookupEnv("DATABASE_HOST"); !found {
 		return errors.New("DATABASE_HOST value does not exist")
@@ -65,6 +109,10 @@ func checkEnv() error {
 		return errors.New("DATABASE_PASS value does not exist")
 	}
 
-	log.Println("Environment check passed.")
+	if _, found := os.LookupEnv("PORT"); !found {
+		return errors.New("PORT value does not exist")
+	}
+
+	l.Println("Environment check passed")
 	return nil
 }
