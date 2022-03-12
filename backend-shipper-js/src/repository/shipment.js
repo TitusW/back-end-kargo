@@ -3,7 +3,9 @@ const { Shipment } = require('../models');
 const ShipmentRepository = {
 
     async findAll() {
-        const result = await Shipment.findAll();
+        const result = await Shipment.findAll({
+            raw: true
+        });
         return result;
     },
 
@@ -32,17 +34,12 @@ const ShipmentRepository = {
     },
 
 
-<<<<<<< HEAD
-=======
-  async update(shipmentNumber,data) {
-      const result = await Shipment.update(data, {
-        where: {
-          ShipmentNumber : shipmentNumber
-        }
-      });
-      return result;
-  },
->>>>>>> 539189cb2e9b74faa96d4a4b878de233e4da09e9
+
+
+
+
+
+
 
 
 };

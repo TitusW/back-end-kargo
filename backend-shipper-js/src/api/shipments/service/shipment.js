@@ -1,8 +1,6 @@
 const shipmentRepository = require('../../../repository/shipment');
 
-function getShipmentAll() {
-    const datas = shipmentRepository.findAll();
-    return datas;
+exports.getShipmentAll = async() => {
+    const result = await shipmentRepository.findAll();
+    return result;
 }
-
-module.exports = { getShipmentAll };
