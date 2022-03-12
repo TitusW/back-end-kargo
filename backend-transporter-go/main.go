@@ -2,10 +2,14 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"log"
+	"net/http"
 	"os"
 
 	database "github.com/TitusW/team4-kargo-excellerate/db"
+	"github.com/TitusW/team4-kargo-excellerate/handlers"
+	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 )
 
@@ -20,7 +24,16 @@ func main() {
 		log.Fatalf("Error ENV: %s", err)
 	}
 
-	database.Connect()
+	db := database.Connect()
+	r := mux.NewRouter()
+	driverh := handlers.NewDriverHandler(db)
+
+	r.HandleFunc("/drivers", driverh.GetDrivers).Methods("GET")
+	r.HandleFunc("/drivers", driverh.CreateDriver).Methods("POST")
+	r.HandleFunc("/drivers/{id}", driverh.UpdateDriver).Methods("PUT")
+
+	fmt.Println("[Go-Debug || GorillaMux] Listening and serving HTTP on : 8080")
+	http.ListenAndServe(":8080", r)
 }
 
 func initEnv() error {

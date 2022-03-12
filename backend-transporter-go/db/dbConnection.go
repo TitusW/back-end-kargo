@@ -1,7 +1,6 @@
 package database
 
 import (
-	"fmt"
 	"log"
 	"os"
 
@@ -22,7 +21,5 @@ func Connect() *gorm.DB {
 	}
 
 	db.AutoMigrate(&models.Driver{})
-	fmt.Println(dsn)
 	return db
-
 }
