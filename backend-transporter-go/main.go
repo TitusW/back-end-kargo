@@ -43,6 +43,7 @@ func main() {
 	driverh := handlers.NewDriverHandler(db.Connection)
 
 	router.HandleFunc("/drivers", driverh.GetDrivers).Methods("GET")
+	router.HandleFunc("/drivers/{id}", driverh.GetDriverById).Methods("GET")
 	router.HandleFunc("/drivers", driverh.CreateDriver).Methods("POST")
 	router.HandleFunc("/drivers/{id}", driverh.UpdateDriver).Methods("PUT")
 
