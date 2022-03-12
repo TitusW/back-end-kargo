@@ -1,5 +1,5 @@
-module.exports = (req, res, next) => {
+module.exports = (err, req, res, next) => {
     return res.status(500).json({
-        status: "oops, something went wrong."
+        message: err.message
     });
 }
