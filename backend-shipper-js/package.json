@@ -4,14 +4,14 @@
   "description": "backend service for shipper ",
   "main": "index.js",
   "scripts": {
-    "migrate:seed": "sequelize-cli db:migrate && sequelize-cli db:seed:all",
-    "migrate:test": "cross-env NODE_ENV=test sequelize-cli db:migrate && cross-env NODE_ENV=test sequelize-cli db:migrate:undo:all ",
+    "migrate:seed": "sequelize-cli db:migrate",
     "start:dev": "nodemon src/"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "compression": "^1.7.4",
+    "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "helmet": "^4.3.1",
     "mysql2": "^2.3.2",
