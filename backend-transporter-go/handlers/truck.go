@@ -23,12 +23,13 @@ func NewTruckHandler(db *gorm.DB) TruckHandler {
 }
 
 type TruckResponse struct {
-	ID             int
-	License_number string
-	License_type   string
-	Truck_type     string
-	Created_at     string
-	Updated_at     string
+	ID              int
+	License_number  string
+	License_type    string
+	Truck_type      string
+	Production_year string
+	Created_at      string
+	Updated_at      string
 }
 
 func (h *handler) GetTrucks(w http.ResponseWriter, r *http.Request) {
@@ -39,12 +40,13 @@ func (h *handler) GetTrucks(w http.ResponseWriter, r *http.Request) {
 
 	for i := 0; i < len(trucks); i++ {
 		TR := TruckResponse{
-			ID:             trucks[i].ID,
-			License_number: trucks[i].License_number,
-			License_type:   trucks[i].License_type,
-			Truck_type:     trucks[i].Truck_type,
-			Created_at:     trucks[i].CreatedAt.String(),
-			Updated_at:     trucks[i].UpdatedAt.String(),
+			ID:              trucks[i].ID,
+			License_number:  trucks[i].License_number,
+			License_type:    trucks[i].License_type,
+			Truck_type:      trucks[i].Truck_type,
+			Production_year: trucks[i].Production_year,
+			Created_at:      trucks[i].CreatedAt.String(),
+			Updated_at:      trucks[i].UpdatedAt.String(),
 		}
 
 		TRs = append(TRs, TR)
@@ -62,12 +64,13 @@ func (h *handler) GetTruckById(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(truck.Model.ID)
 
 	var TR TruckResponse = TruckResponse{
-		ID:             truck.ID,
-		License_number: truck.License_number,
-		License_type:   truck.License_type,
-		Truck_type:     truck.Truck_type,
-		Created_at:     truck.CreatedAt.String(),
-		Updated_at:     truck.UpdatedAt.String(),
+		ID:              truck.ID,
+		License_number:  truck.License_number,
+		License_type:    truck.License_type,
+		Truck_type:      truck.Truck_type,
+		Production_year: truck.Production_year,
+		Created_at:      truck.CreatedAt.String(),
+		Updated_at:      truck.UpdatedAt.String(),
 	}
 
 	w.WriteHeader(http.StatusOK)
@@ -79,9 +82,10 @@ func (h *handler) CreateTruck(w http.ResponseWriter, r *http.Request) {
 	var truck models.Truck
 	json.NewDecoder(r.Body).Decode(&truck)
 	h.Db.Create(&models.Truck{
-		License_number: truck.License_number,
-		License_type:   truck.License_type,
-		Truck_type:     truck.Truck_type,
+		License_number:  truck.License_number,
+		License_type:    truck.License_type,
+		Truck_type:      truck.Truck_type,
+		Production_year: truck.Production_year,
 	})
 
 	res := map[string]interface{}{
@@ -100,9 +104,10 @@ func (h *handler) UpdateTruck(w http.ResponseWriter, r *http.Request) {
 	h.Db.First(&truck, id)
 	json.NewDecoder(r.Body).Decode(&truck)
 	h.Db.Model(&truck).Updates(&models.Truck{
-		License_number: truck.License_number,
-		License_type:   truck.License_type,
-		Truck_type:     truck.Truck_type,
+		License_number:  truck.License_number,
+		License_type:    truck.License_type,
+		Truck_type:      truck.Truck_type,
+		Production_year: truck.Production_year,
 	})
 
 	res := map[string]interface{}{

@@ -14,7 +14,7 @@ type Truck struct {
 	License_number  string
 	License_type    string
 	Truck_type      string
-	Production_year int
+	Production_year string
 	Created_at      time.Time
 	Updated_at      time.Time
 }
