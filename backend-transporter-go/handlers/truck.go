@@ -34,11 +34,11 @@ type TruckResponse struct {
 func (h *handler) GetTrucks(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	var trucks []models.Truck
-	var DRs []TruckResponse
+	var TRs []TruckResponse
 	h.Db.Find(&trucks)
 
 	for i := 0; i < len(trucks); i++ {
-		DR := TruckResponse{
+		TR := TruckResponse{
 			ID:             trucks[i].ID,
 			License_number: trucks[i].License_number,
 			License_type:   trucks[i].License_type,
@@ -47,11 +47,11 @@ func (h *handler) GetTrucks(w http.ResponseWriter, r *http.Request) {
 			Updated_at:     trucks[i].UpdatedAt.String(),
 		}
 
-		DRs = append(DRs, DR)
+		TRs = append(TRs, TR)
 	}
 
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(DRs)
+	json.NewEncoder(w).Encode(TRs)
 }
 
 func (h *handler) GetTruckById(w http.ResponseWriter, r *http.Request) {
@@ -61,7 +61,7 @@ func (h *handler) GetTruckById(w http.ResponseWriter, r *http.Request) {
 	h.Db.First(&truck, id)
 	fmt.Println(truck.Model.ID)
 
-	var DR TruckResponse = TruckResponse{
+	var TR TruckResponse = TruckResponse{
 		ID:             truck.ID,
 		License_number: truck.License_number,
 		License_type:   truck.License_type,
@@ -71,7 +71,7 @@ func (h *handler) GetTruckById(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(DR)
+	json.NewEncoder(w).Encode(TR)
 }
 
 func (h *handler) CreateTruck(w http.ResponseWriter, r *http.Request) {
