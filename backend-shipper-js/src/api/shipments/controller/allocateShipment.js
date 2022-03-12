@@ -4,7 +4,7 @@ exports.allocateShipment = async (req,res,next)=>{
     try {
         const { shipmentNumber } = req.params;
         const data = req.body;
-        const result = await allocateShipmentService(shipmentNumber, data)
+        const result = await allocateShipmentService(shipmentNumber, data.truckId, data.driverId);
         return res.status(200).json({
             message: `success allocate ${result[0]} data` ,
             data: {}
