@@ -24,22 +24,24 @@ const ShipmentRepository = {
         return result.get({ plain: true });
     },
 
+    // async update(shipmentNumber, data) {
+    //     const result = await Shipment.update(data, {
+    //         where: {
+    //             shipmentNumber: shipmentNumber
+    //         }
+    //     });
+    //     return result.get({ plain: true });
+    // },
+
+
     async update(shipmentNumber, data) {
         const result = await Shipment.update(data, {
             where: {
-                shipmentNumber: shipmentNumber
+                ShipmentNumber: shipmentNumber
             }
         });
-        return result.get({ plain: true });
+        return result;
     },
-
-
-
-
-
-
-
-
 
 
 };
