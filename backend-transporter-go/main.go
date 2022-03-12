@@ -41,10 +41,15 @@ func main() {
 
 	router := mux.NewRouter()
 	driverh := handlers.NewDriverHandler(db.Connection)
+	truckh := handlers.NewTruckHandler(db.Connection)
 
 	router.HandleFunc("/drivers", driverh.GetDrivers).Methods("GET")
-	router.HandleFunc("/drivers", driverh.CreateDriver).Methods("POST")
-	router.HandleFunc("/drivers/{id}", driverh.UpdateDriver).Methods("PUT")
+	router.HandleFunc("/driver", driverh.CreateDriver).Methods("POST")
+	router.HandleFunc("/driver/{id}", driverh.UpdateDriver).Methods("PUT")
+
+	router.HandleFunc("/trucks", truckh.GetTrucks).Methods("GET")
+	router.HandleFunc("/truck", truckh.CreateTruck).Methods("POST")
+	router.HandleFunc("/truck/{id}", truckh.UpdateTruck).Methods("PUT")
 
 	srv := &http.Server{
 		Addr:         port,
