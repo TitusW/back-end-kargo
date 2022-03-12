@@ -10,19 +10,26 @@ import (
 	"gorm.io/gorm"
 )
 
-func Connect() *gorm.DB {
+type Database struct {
+	connection *gorm.DB
+}
+
+func (db *Database) Connect(l *log.Logger) {
 	dbh := os.Getenv("DATABASE_HOST")
 	dbp := os.Getenv("DATABASE_PORT")
 	dbu := os.Getenv("DATABASE_USER")
 	dbpw := os.Getenv("DATABASE_PASS")
 	dsn := dbu + ":" + dbpw + "@tcp(" + dbh + ":" + dbp + ")/kargo?charset=utf8mb4&parseTime=True&loc=Local"
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	dbConn, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	db.connection = dbConn
 	if err != nil {
-		log.Fatalf("Failed to connect to MySQL %v", err)
+		l.Fatalf("Failed to connect to MySQL %v", err)
 	}
 
-	db.AutoMigrate(&models.Driver{})
+	db.connection.AutoMigrate(&models.Driver{})
+	db.connection.AutoMigrate(&models.Truck{})
 	fmt.Println(dsn)
-	return db
+}
 
+func (db *Database) Close(l *log.Logger) {
 }
