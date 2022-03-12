@@ -18,7 +18,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Shipment.init({
-    ShipmentNumber: DataTypes.STRING,
+    ShipmentNumber: {
+      type:DataTypes.STRING,
+      unique: true
+    },
     LicenseNumber: DataTypes.INTEGER,
     Driver: DataTypes.STRING,
     Origin: DataTypes.STRING,
