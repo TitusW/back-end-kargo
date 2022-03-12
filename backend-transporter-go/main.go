@@ -10,13 +10,27 @@ import (
 )
 
 func main() {
-	// err := checkEnv()
-	// if err != nil {
-	// 	log.Fatalf("Error ENV: %s", err)
-	// }
-	godotenv.Load()
-	db := database.Connect()
+	err := initEnv()
+	if err != nil {
+		log.Fatalf("Error ENV: %s", err)
+	}
 
+	err = checkEnv()
+	if err != nil {
+		log.Fatalf("Error ENV: %s", err)
+	}
+
+	database.Connect()
+}
+
+func initEnv() error {
+	log.Println("Checking .env file")
+
+	if err := godotenv.Load(); err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func checkEnv() error {
