@@ -1,5 +1,8 @@
 require('dotenv').config();
-exports.config = {
+
+
+module.exports = {
+  development: {
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
@@ -16,4 +19,14 @@ exports.config = {
     },
     dialect: process.env.DB_DIALECT,
     timezone: '+07:00'
+  },
+  test: {
+    username: 'root',
+    password: null,
+    database: 'database_test',
+    host: '127.0.0.1',
+    dialect: 'sqlite',
+    storage: './database_test.sqlite',
+    logging: false,
+  }
 };

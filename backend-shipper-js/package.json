@@ -4,8 +4,7 @@
   "description": "backend service for shipper ",
   "main": "index.js",
   "scripts": {
-    "migrate:seed": "sequelize-cli db:migrate && sequelize-cli db:seed:all",
-    "migrate:test": "cross-env NODE_ENV=test sequelize-cli db:migrate && cross-env NODE_ENV=test sequelize-cli db:migrate:undo:all ",
+    "migrate:seed": "sequelize-cli db:migrate",
     "start:dev": "nodemon src/"
   },
   "author": "",

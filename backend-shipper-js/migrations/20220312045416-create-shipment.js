@@ -1,6 +1,6 @@
 'use strict';
 
-let {status} = require('../constant/status');
+let {status} = require('../src/constant/status');
 status = Object.values(status);
 
 module.exports = {
